@@ -11,7 +11,7 @@ export class NavComponent implements OnInit {
 
   constructor(
     public modal: ModalService,
-    public auth: AuthService,
+    public auth: AuthService
   ) { }
 
   ngOnInit(): void {
@@ -22,5 +22,4 @@ export class NavComponent implements OnInit {
 
     this.modal.toggleModal('auth')
   }
-
 }
