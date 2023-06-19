@@ -28,6 +28,7 @@ const routes: Routes = [
     loadChildren: async () => (await import('./video/video.module')).VideoModule
   },
   {
+    // not found-wild card
     path: '**',
     component: NotFoundComponent
   }

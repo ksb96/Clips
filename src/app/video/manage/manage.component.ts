@@ -21,7 +21,7 @@ export class ManageComponent implements OnInit {
     private route: ActivatedRoute,
     private clipService: ClipService,
     private modal: ModalService
-  ) { 
+  ) {
     this.sort$ = new BehaviorSubject(this.videoOrder)
   }
 
@@ -63,7 +63,7 @@ export class ManageComponent implements OnInit {
 
   update($event: IClip) {
     this.clips.forEach((element, index) => {
-      if(element.docID == $event.docID) {
+      if (element.docID == $event.docID) {
         this.clips[index].title = $event.title
       }
     })
@@ -75,7 +75,7 @@ export class ManageComponent implements OnInit {
     this.clipService.deleteClip(clip)
 
     this.clips.forEach((element, index) => {
-      if(element.docID == clip.docID) {
+      if (element.docID == clip.docID) {
         this.clips.splice(index, 1)
       }
     })
@@ -84,7 +84,7 @@ export class ManageComponent implements OnInit {
   async copyToClipboard($event: MouseEvent, docID: string | undefined) {
     $event.preventDefault()
 
-    if(!docID) {
+    if (!docID) {
       return
     }
 
