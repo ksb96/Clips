@@ -31,10 +31,15 @@ export class UploadComponent implements OnDestroy {
   selectedScreenshot = ''
   screenshotTask?: AngularFireUploadTask
 
-  title = new FormControl('', [
-    Validators.required,
-    Validators.minLength(3)
-  ])
+  //file-name validator
+  title = new FormControl('', {
+    validators: [
+      Validators.required,
+      Validators.minLength(3)
+    ],
+    nonNullable: true
+  })
+
   uploadForm = new FormGroup({
     title: this.title
   })
@@ -45,7 +50,7 @@ export class UploadComponent implements OnDestroy {
     private clipsService: ClipService,
     private router: Router,
     public ffmpegService: FfmpegService
-  ) { 
+  ) {
     auth.user.subscribe(user => this.user = user)
     this.ffmpegService.init()
   }
@@ -55,7 +60,7 @@ export class UploadComponent implements OnDestroy {
   }
 
   async storeFile($event: Event) {
-    if(this.ffmpegService.isRunning) {
+    if (this.ffmpegService.isRunning) {
       return
     }
 
@@ -64,8 +69,8 @@ export class UploadComponent implements OnDestroy {
     this.file = ($event as DragEvent).dataTransfer ?
       ($event as DragEvent).dataTransfer?.files.item(0) ?? null :
       ($event.target as HTMLInputElement).files?.item(0) ?? null
-
-    if(!this.file || this.file.type !== 'video/mp4') {
+    // console.log(this.file)
+    if (!this.file || this.file.type !== 'video/mp4') {
       return
     }
 
@@ -73,12 +78,14 @@ export class UploadComponent implements OnDestroy {
 
     this.selectedScreenshot = this.screenshots[0]
 
+    //file upload-type validation
     this.title.setValue(
       this.file.name.replace(/\.[^/.]+$/, '')
     )
     this.nextStep = true
   }
 
+  //form-submition
   async uploadFile() {
     this.uploadForm.disable()
 
@@ -88,7 +95,7 @@ export class UploadComponent implements OnDestroy {
     this.inSubmission = true
     this.showPercentage = true
 
-    const clipFileName = uuid() 
+    const clipFileName = uuid()
     const clipPath = `clips/${clipFileName}.mp4`
 
     const screenshotBlob = await this.ffmpegService.blobFromURL(
@@ -110,7 +117,7 @@ export class UploadComponent implements OnDestroy {
     ]).subscribe((progress) => {
       const [clipProgress, screenshotProgress] = progress
 
-      if(!clipProgress || !screenshotProgress) {
+      if (!clipProgress || !screenshotProgress) {
         return
       }
 
