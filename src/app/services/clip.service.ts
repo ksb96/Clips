@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { 
-  AngularFirestore, AngularFirestoreCollection, DocumentReference, 
+import {
+  AngularFirestore, AngularFirestoreCollection, DocumentReference,
   QuerySnapshot
 } from '@angular/fire/compat/firestore'
 import IClip from '../models/clip.model';
@@ -8,10 +8,10 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { switchMap, map } from 'rxjs/operators';
 import { of, BehaviorSubject, combineLatest } from 'rxjs';
 import { AngularFireStorage } from '@angular/fire/compat/storage'
-import { 
+import {
   Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Router
 } from "@angular/router"
- 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -25,11 +25,11 @@ export class ClipService implements Resolve<IClip | null> {
     private auth: AngularFireAuth,
     private storage: AngularFireStorage,
     private router: Router
-  ) { 
+  ) {
     this.clipsCollection = db.collection('clips')
   }
 
-  createClip(data: IClip) : Promise<DocumentReference<IClip>> {
+  createClip(data: IClip): Promise<DocumentReference<IClip>> {
     return this.clipsCollection.add(data)
   }
 
@@ -40,8 +40,8 @@ export class ClipService implements Resolve<IClip | null> {
     ]).pipe(
       switchMap(values => {
         const [user, sort] = values
-        
-        if(!user) {
+
+        if (!user) {
           return of([])
         }
 
@@ -77,7 +77,7 @@ export class ClipService implements Resolve<IClip | null> {
   }
 
   async getClips() {
-    if(this.pendingReq) {
+    if (this.pendingReq) {
       return
     }
 
@@ -88,7 +88,7 @@ export class ClipService implements Resolve<IClip | null> {
 
     const { length } = this.pageClips
 
-    if(length) {
+    if (length) {
       const lastDocID = this.pageClips[length - 1].docID
       const lastDoc = await this.clipsCollection.doc(lastDocID)
         .get()
@@ -118,7 +118,7 @@ export class ClipService implements Resolve<IClip | null> {
         map(snapshot => {
           const data = snapshot.data()
 
-          if(!data) {
+          if (!data) {
             this.router.navigate(['/'])
             return null
           }
