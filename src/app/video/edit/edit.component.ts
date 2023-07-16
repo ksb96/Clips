@@ -1,4 +1,4 @@
-import { 
+import {
   Component, OnInit, OnDestroy, Input, OnChanges, Output,
   EventEmitter
 } from '@angular/core';
@@ -31,7 +31,7 @@ export class EditComponent implements OnInit, OnDestroy, OnChanges {
   })
 
   constructor(
-    private modal: ModalService, 
+    private modal: ModalService,
     private clipService: ClipService
   ) { }
 
@@ -44,7 +44,7 @@ export class EditComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnChanges() {
-    if(!this.activeClip) {
+    if (!this.activeClip) {
       return
     }
 
@@ -55,7 +55,7 @@ export class EditComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   async submit() {
-    if(!this.activeClip) {
+    if (!this.activeClip) {
       return
     }
 
@@ -69,7 +69,7 @@ export class EditComponent implements OnInit, OnDestroy, OnChanges {
       //   this.clipID.value, this.title.value
       // ) 
     }
-    catch(e) {
+    catch (e) {
       this.inSubmission = false
       this.alertColor = 'red'
       this.alertMsg = 'Something went wrong. Try again later'
