@@ -1,11 +1,11 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
 # firebase
-.firebaserc
-.database.rules.json
-.firebase.json
-.firestore.indexes.json
-.firestore.rules
+/firebaserc
+/database.rules.json
+/firebase.json
+/firestore.indexes.json
+/firestore.rules
 
 # compiled output
 /dist
@@ -16,9 +16,7 @@
 
 # dependencies
 /node_modules
-
-# angular
-.angular
+.angular/cache/
 
 # profiling files
 chrome-profiler-events*.json
