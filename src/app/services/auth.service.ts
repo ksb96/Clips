@@ -21,7 +21,7 @@ export class AuthService {
     private db: AngularFirestore,
     private router: Router,
     private route: ActivatedRoute
-  ) {
+  ) { 
     this.usersCollection = db.collection('users')
     this.isAuthenticated$ = auth.user.pipe(
       map(user => !!user)
@@ -31,45 +31,46 @@ export class AuthService {
     )
     this.router.events.pipe(
       filter(e => e instanceof NavigationEnd),
-      map(_e => this.route.firstChild),
+      map(e => this.route.firstChild),
       switchMap(route => route?.data ?? of({}))
     ).subscribe(data => {
       this.redirect = data.authOnly ?? false
     })
   }
-
+  
   public async createUser(userData: IUser) {
-    if (!userData.password) {
+    if(!userData.password) {
       throw new Error("Password not provided!")
     }
 
-    //user-cred CREATED and MAPPED with the user data
     const userCred = await this.auth.createUserWithEmailAndPassword(
       userData.email, userData.password
     )
-    if (!userCred.user) {
+
+    if(!userCred.user) {
       throw new Error("User can't be found")
     }
-    //setting/updating/adding new property to the document
+    
     await this.usersCollection.doc(userCred.user.uid).set({
       name: userData.name,
       email: userData.email,
       age: userData.age,
       phoneNumber: userData.phoneNumber
     })
+
     await userCred.user.updateProfile({
       displayName: userData.name
     })
   }
 
-  public async logout($event: Event) {
-    if ($event) {
+  public async logout($event?: Event) {
+    if($event) {
       $event.preventDefault()
     }
 
     await this.auth.signOut()
 
-    if (this.redirect) {
+    if(this.redirect) {
       await this.router.navigateByUrl('/')
     }
   }

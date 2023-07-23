@@ -1,11 +1,8 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-// import { AngularFireAuth } from "@angular/fire/compat/auth";
 import { AuthService } from 'src/app/services/auth.service';
-// import { AngularFirestore } from "@angular/fire/compat/firestore";
 import { RegisterValidators } from '../validators/register-validators';
 import { EmailTaken } from '../validators/email-taken';
-import IUser from 'src/app/models/user.model';
 
 @Component({
   selector: 'app-register',
@@ -15,7 +12,6 @@ import IUser from 'src/app/models/user.model';
 export class RegisterComponent {
   constructor(
     private auth: AuthService,
-    // private db: AngularFirestore,
     private emailTaken: EmailTaken
   ) { }
 
@@ -29,9 +25,10 @@ export class RegisterComponent {
     Validators.required,
     Validators.email
   ], [this.emailTaken.validate])
-  age = new FormControl<number | null>(null, [
+  age = new FormControl('', [
     Validators.required,
     Validators.min(18),
+    Validators.max(120)
   ])
   password = new FormControl('', [
     Validators.required,
@@ -60,20 +57,21 @@ export class RegisterComponent {
 
   async register() {
     this.showAlert = true
-    this.alertMsg = 'Please wait! Your account is being created...'
+    this.alertMsg = 'Please wait! Your account is being created.'
     this.alertColor = 'blue'
     this.inSubmission = true
 
     try {
-      await this.auth.createUser(this.registerForm.value as IUser)
+      // await this.auth.createUser(this.registerForm.value)
     } catch (e) {
       console.error(e)
 
-      this.alertMsg = 'Unexpected error occured! Please try again later'
+      this.alertMsg = 'An unexpected error occurred. Please try again later'
       this.alertColor = 'red'
       this.inSubmission = false
       return
     }
+
     this.alertMsg = 'Success! Your account has been created.'
     this.alertColor = 'green'
   }

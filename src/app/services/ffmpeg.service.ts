@@ -9,16 +9,17 @@ export class FfmpegService {
   isReady = false
   private ffmpeg
 
-  constructor() {
+  constructor() { 
     this.ffmpeg = createFFmpeg({ log: true })
   }
 
-  //load ffmpeg
   async init() {
-    if (this.isReady) {
+    if(this.isReady) {
       return
     }
+
     await this.ffmpeg.load()
+
     this.isReady = true
   }
 
@@ -26,38 +27,41 @@ export class FfmpegService {
     this.isRunning = true
 
     const data = await fetchFile(file)
+
     this.ffmpeg.FS('writeFile', file.name, data)
 
-    const seconds = [1, 2, 3]
+    const seconds = [1,2,3]
     const commands: string[] = []
 
-    //process screenshot file+format
     seconds.forEach(second => {
       commands.push(
         // Input
-        '-i', file.name, //-i -grab specific file from file system
+        '-i', file.name,
         // Output Options
-        '-ss', `00:00:0${second}`, //ss -configured current timestamp(hh:mm:ss)
-        '-frames:v', '1', //24,30,60
-        '-filter:v', 'scale=510:-1', //width:height
+        '-ss', `00:00:0${second}`,
+        '-frames:v', '1',
+        '-filter:v', 'scale=510:-1',
         // Output
-        `output_0${second}.png` //screenshot filename
+        `output_0${second}.png`
       )
     })
 
-    await this.ffmpeg.run(...commands)
+    await this.ffmpeg.run(
+      ...commands
+    )
 
     const screenshots: string[] = []
 
     seconds.forEach(second => {
-      const screenshotFile = this.ffmpeg.FS('readFile', `output_0${second}.png`)
-      //storing binary object data of screenshots-image
+      const screenshotFile = this.ffmpeg.FS(
+        'readFile', `output_0${second}.png`
+      )
       const screenshotBlob = new Blob(
         [screenshotFile.buffer], {
-        type: 'image/png'
-      })
+          type: 'image/png'
+        }
+      )
 
-      //convert to url object(from blob)
       const screenshotURL = URL.createObjectURL(screenshotBlob)
 
       screenshots.push(screenshotURL)

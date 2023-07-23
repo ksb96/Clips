@@ -6,14 +6,13 @@ import { ClipComponent } from './clip/clip.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { ClipService } from './services/clip.service';
 
-//storing routing :path/s(url) in an array
 const routes: Routes = [
   {
     path: '',
     component: HomeComponent
   },
   {
-    path: 'about',
+    path: 'about', // example.com/about
     component: AboutComponent
   },
   {
@@ -28,7 +27,6 @@ const routes: Routes = [
     loadChildren: async () => (await import('./video/video.module')).VideoModule
   },
   {
-    // not found-wild card
     path: '**',
     component: NotFoundComponent
   }
