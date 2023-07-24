@@ -1,3 +1,6 @@
 # Clips
 
-Upload short gamplay videos.
+Upload short gameplay videos.
+
+
+# URL: https://clips-deploy.web.app/
