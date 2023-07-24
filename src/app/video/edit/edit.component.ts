@@ -4,7 +4,7 @@ import {
 } from '@angular/core';
 import { ModalService } from 'src/app/services/modal.service';
 import IClip from 'src/app/models/clip.model';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { ClipService } from 'src/app/services/clip.service';
 
 @Component({
@@ -20,12 +20,12 @@ export class EditComponent implements OnInit, OnDestroy, OnChanges {
   alertMsg = 'Please wait! Updating clip.'
   @Output() update = new EventEmitter()
 
-  clipID = new FormControl('')
-  title = new FormControl('', [
+  clipID = new UntypedFormControl('')
+  title = new UntypedFormControl('', [
     Validators.required,
     Validators.minLength(3)
   ])
-  editForm = new FormGroup({
+  editForm = new UntypedFormGroup({
     title: this.title,
     id: this.clipID
   })
@@ -50,7 +50,7 @@ export class EditComponent implements OnInit, OnDestroy, OnChanges {
 
     this.inSubmission = false
     this.showAlert = false
-    // this.clipID.setValue(this.activeClip.docID)
+    this.clipID.setValue(this.activeClip.docID)
     this.title.setValue(this.activeClip.title)
   }
 
@@ -65,9 +65,9 @@ export class EditComponent implements OnInit, OnDestroy, OnChanges {
     this.alertMsg = 'Please wait! Updating clip.'
 
     try {
-      // await this.clipService.updateClip(
-      //   this.clipID.value, this.title.value
-      // ) 
+      await this.clipService.updateClip(
+        this.clipID.value, this.title.value
+      ) 
     }
     catch(e) {
       this.inSubmission = false
@@ -76,7 +76,7 @@ export class EditComponent implements OnInit, OnDestroy, OnChanges {
       return
     }
 
-    // this.activeClip.title = this.title.value
+    this.activeClip.title = this.title.value
     this.update.emit(this.activeClip)
 
     this.inSubmission = false
