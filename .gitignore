@@ -1,12 +1,5 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
-# firebase
-/firebaserc
-/database.rules.json
-/firebase.json
-/firestore.indexes.json
-/firestore.rules
-
 # compiled output
 /dist
 /tmp
@@ -16,7 +9,6 @@
 
 # dependencies
 /node_modules
-.angular/cache/
 
 # profiling files
 chrome-profiler-events*.json
@@ -47,6 +39,7 @@ npm-debug.log
 yarn-error.log
 testem.log
 /typings
+/.angular
 
 # System Files
 .DS_Store
